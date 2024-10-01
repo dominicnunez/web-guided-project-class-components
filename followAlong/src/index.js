@@ -48,7 +48,7 @@ class App extends React.Component {
 
   // Class methods to update state
   addItem = (e, item) =>{
-    e.preventDefaults
+    e.preventDefault()
     const newItem = {
       name: item,
       id: Date.now(),
@@ -58,6 +58,19 @@ class App extends React.Component {
     this.setState({...this.state, groceries: [...this.state.groceries, newItem]})
   }
 
+  togglePurchased = itemId => {
+    this.setState({...this.state, groceries: this.state.groceries.map(item => {
+      if (item.id == itemId) {
+        return {...item, purchased: !item.purchased}
+      }
+      return item;
+    })})
+}
+
+  clearPurchased = () => {
+    this.setState({...this.state, groceries: this.state.groceries.filter(item => !item.purchased)})
+  }
+
   render() {
     return (
       <div className="App">
@@ -65,8 +78,8 @@ class App extends React.Component {
            <h1>Shopping List</h1>
            <ListForm addItem={this.addItem} />
          </div>
-        <GroceryList groceries={this.state.groceries} />
-        <button className="clear-btn">Clear Purchased</button>
+        <GroceryList togglePurchased={this.togglePurchased} groceries={this.state.groceries} />
+        <button className="clear-btn" onClick={this.clearPurchased}>Clear Purchased</button>
        </div>
     );
   }

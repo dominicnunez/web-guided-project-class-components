@@ -11,13 +11,20 @@ class ListForm extends React.Component {
 
   handleChanges = e => {
     // update state with each keystroke
+    e.preventDefault()
+    this.setState({...this.state, item: e.target.value})
   };
 
   // class property to submit form
+  submitForm = e => {
+    e.preventDefault();
+    this.props.addItem(e, this.state.item);
+    this.setState({item: ""})
+  };
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.submitForm}>
         {/* This is an uncontrolled component 😬 We want it to be controlled by state */}
         <input type="text" name="item" value={this.state.item} onChange={this.handleChanges}/>
         <button>Add</button>
